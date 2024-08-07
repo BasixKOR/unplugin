@@ -15,7 +15,7 @@ lastUpdated: false
 - [Rollup](https://rollupjs.org/)
 - [webpack](https://webpack.js.org/)
 - [esbuild](https://esbuild.github.io/)
-- [Rspack](https://www.rspack.dev/) <span style="color: #ca8a04"><strong>(⚠️ experimental)</strong></span>
+- [Rspack](https://www.rspack.dev/)
 - [Rolldown](https://rolldown.rs/) <span style="color: #ca8a04"><strong>(⚠️ experimental)</strong></span>
 - [Farm](https://www.farmfe.org/)
 
@@ -82,6 +82,17 @@ export default defineConfig({
 ```js [Rollup]
 // rollup.config.js
 import Starter from 'unplugin-starter/rollup'
+
+export default {
+  plugins: [
+    Starter({ /* options */ }),
+  ],
+}
+```
+
+```js [Rolldown]
+// rolldown.config.js
+import Starter from 'unplugin-starter/rolldown'
 
 export default {
   plugins: [
@@ -172,12 +183,12 @@ export default defineConfig({
 | ----------------------------------------------------------------------------------| :-------------: | :--: | :-------: | :-------: | :-----------: | :----: | :---: |
 | [`enforce`](https://vitejs.dev/guide/api-plugin.html#plugin-ordering)             | ❌ <sup>1</sup> |  ✅  |    ✅     |    ✅     | ❌ <sup>1</sup> |   ✅   |  ✅  |
 | [`buildStart`](https://rollupjs.org/plugin-development/#buildstart)               |       ✅        |  ✅  |    ✅     |    ✅     |       ✅        |   ✅   |  ✅  |
-| [`resolveId`](https://rollupjs.org/plugin-development/#resolveid)                 |       ✅        |  ✅  |    ✅     |    ✅     |       ✅        |   ❌   |  ✅  |
+| [`resolveId`](https://rollupjs.org/plugin-development/#resolveid)                 |       ✅        |  ✅  |    ✅     |    ✅     |       ✅        | ✅ <sup>5</sup> |  ✅  |
 | `loadInclude`<sup>2</sup>                                                         |       ✅        |  ✅  |    ✅     |    ✅     |       ✅        |   ✅   |  ✅  |
 | [`load`](https://rollupjs.org/plugin-development/#load)                           |       ✅        |  ✅  |    ✅     |    ✅     | ✅ <sup>3</sup> |   ✅   |  ✅  |
 | `transformInclude`<sup>2</sup>                                                    |       ✅        |  ✅  |    ✅     |    ✅     |       ✅        |   ✅   |  ✅  |
 | [`transform`](https://rollupjs.org/plugin-development/#transform)                 |       ✅        |  ✅  |    ✅     |    ✅     | ✅ <sup>3</sup> |   ✅   |  ✅  |
-| [`watchChange`](https://rollupjs.org/plugin-development/#watchchange)             |       ✅        |  ✅  |    ✅     |    ✅     |       ❌        |   ❌   |  ✅  |
+| [`watchChange`](https://rollupjs.org/plugin-development/#watchchange)             |       ✅        |  ✅  |    ✅     |    ✅     |       ❌        |   ✅   |  ✅  |
 | [`buildEnd`](https://rollupjs.org/plugin-development/#buildend)                   |       ✅        |  ✅  |    ✅     |    ✅     |       ✅        |   ✅   |  ✅  |
 | [`writeBundle`](https://rollupjs.org/plugin-development/#writebundle)<sup>4</sup> |       ✅        |  ✅  |    ✅     |    ✅     |       ✅        |   ✅   |  ✅  |
 
@@ -186,6 +197,7 @@ export default defineConfig({
 2. webpack's id filter is outside of loader logic; an additional hook is needed for better perf on webpack. In Rollup and Vite, this hook has been polyfilled to match the behaviors. See for the following usage examples.
 3. Although esbuild can handle both JavaScript and CSS and many other file formats, you can only return JavaScript in `load` and `transform` results.
 4. Currently, `writeBundle` is only serves as a hook for the timing. It doesn't pass any arguments.
+5. Rspack supports `resolveId` with a minimum required version of v1.0.0-alpha.1.
 :::
 
 ### Usage
@@ -218,6 +230,7 @@ export default unplugin
 
 export const vitePlugin = unplugin.vite
 export const rollupPlugin = unplugin.rollup
+export const rolldownPlugin = unplugin.rolldown
 export const webpackPlugin = unplugin.webpack
 export const rspackPlugin = unplugin.rspack
 export const esbuildPlugin = unplugin.esbuild
@@ -229,9 +242,9 @@ export const farmPlugin = unplugin.farm
 | Context                                                                       | Rollup | Vite | webpack 4 | webpack 5 | esbuild | Rspack | Farm |
 | -------------------------------------------------------------------------- | :----: | :--: | :-------: | :-------: | :-----: | :----: | :---: |
 | [`this.parse`](https://rollupjs.org/plugin-development/#this-parse)                   |   ✅   |  ✅  |    ✅     |    ✅     |   ✅    |   ✅   |  ✅  |
-| [`this.addWatchFile`](https://rollupjs.org/plugin-development/#this-addwatchfile)     |   ✅   |  ✅  |    ✅     |    ✅     |   ❌    |   ❌   |  ✅  |
+| [`this.addWatchFile`](https://rollupjs.org/plugin-development/#this-addwatchfile)     |   ✅   |  ✅  |    ✅     |    ✅     |   ❌    |   ✅   |  ✅  |
 | [`this.emitFile`](https://rollupjs.org/plugin-development/#this-emitfile)<sup>1</sup> |   ✅   |  ✅  |    ✅     |    ✅     |   ✅    |   ✅   |  ✅  |
-| [`this.getWatchFiles`](https://rollupjs.org/plugin-development/#this-getwatchfiles)   |   ✅   |  ✅  |    ✅     |    ✅     |   ❌    |   ❌   |  ✅  |
+| [`this.getWatchFiles`](https://rollupjs.org/plugin-development/#this-getwatchfiles)   |   ✅   |  ✅  |    ✅     |    ✅     |   ❌    |   ✅   |  ✅  |
 | [`this.warn`](https://rollupjs.org/plugin-development/#this-warn)                     |   ✅   |  ✅  |    ✅     |    ✅     |   ✅    |   ✅   |  ✅  |
 | [`this.error`](https://rollupjs.org/plugin-development/#this-error)                   |   ✅   |  ✅  |    ✅     |    ✅     |   ✅    |   ✅   |  ✅  |
 
@@ -289,7 +302,7 @@ While **Unplugin** provides compatible layers for some hooks, the functionality 
 
 ### Hooks
 
-```ts {9,18,24,27,30,33} twoslash
+```ts {9,18,24,27,30,33,36,48} twoslash
 import type { UnpluginFactory } from 'unplugin'
 import { createUnplugin } from 'unplugin'
 
@@ -298,7 +311,7 @@ export interface Options {
 }
 
 export const unpluginFactory: UnpluginFactory<Options | undefined> = (options, meta) => {
-  console.log(meta.framework) // vite rollup webpack esbuild rspack
+  console.log(meta.framework) // vite rollup webpack esbuild rspack...
   return {
     name: 'unplugin-starter',
     transform(code) {
@@ -316,11 +329,14 @@ export const unpluginFactory: UnpluginFactory<Options | undefined> = (options, m
     rollup: {
       // Rollup plugin
     },
+    rolldown: {
+      // Rolldown plugin
+    },
     webpack(compiler) {
       // Configure webpack compiler
     },
     rspack(compiler) {
-      // Configure webpack compiler
+      // Configure Rspack compiler
     },
     esbuild: {
       // Change the filter of onResolve and onLoad
@@ -354,16 +370,18 @@ Each of the function takes the same generic factory argument as `createUnplugin`
 import {
   createEsbuildPlugin,
   createFarmPlugin,
+  createRolldownPlugin,
   createRollupPlugin,
   createRspackPlugin,
   createVitePlugin,
-  createWebpackPlugin,
+  createWebpackPlugin
 } from 'unplugin'
 
-const vitePlugin = createVitePlugin({ /* options */ })
-const rollupPlugin = createRollupPlugin({ /* options */ })
-const esbuildPlugin = createEsbuildPlugin({ /* options */ })
-const webpackPlugin = createWebpackPlugin({ /* options */ })
-const rspackPlugin = createRspackPlugin({ /* options */ })
-const farmPlugin = createFarmPlugin({ /* options */ })
+const vitePlugin = createVitePlugin(/* factory */)
+const rollupPlugin = createRollupPlugin(/* factory */)
+const rolldownPlugin = createRolldownPlugin(/* factory */)
+const esbuildPlugin = createEsbuildPlugin(/* factory */)
+const webpackPlugin = createWebpackPlugin(/* factory */)
+const rspackPlugin = createRspackPlugin(/* factory */)
+const farmPlugin = createFarmPlugin(/* factory */)
 ```

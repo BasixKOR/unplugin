@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "baseUrl": ".",
     "module": "ESNext",
     "moduleResolution": "Node",
     "paths": {
@@ -22,6 +21,6 @@
   "include": [
     "src",
     "test",
-    "docs/.vitepress"
+    "docs/.vitepress/**/*"
   ]
 }
