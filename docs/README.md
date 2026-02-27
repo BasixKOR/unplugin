@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://raw.githubusercontent.com/unplugin/docs/main/public/logo.svg">
+<img src="https://raw.githubusercontent.com/unplugin/docs/main/public/logo.svg" alt="Unplugin Logo" />
 </p>
 
 <h1 align="center">
