@@ -55,16 +55,17 @@ function checkHookCalls(
   const ids = transformIncludeCallback.mock.calls.map(call => call[0])
   ids.forEach((id) => {
     expect(path.isAbsolute(id)).toBe(true)
-    if (name === 'vite') {
+
+    const hasExtraOptions = name === 'vite' || name === 'rollup'
+    if (hasExtraOptions) {
       expect(transformCallback).toHaveBeenCalledWith(expect.anything(), id, expect.anything())
     }
     else {
       expect(transformCallback).toHaveBeenCalledWith(expect.anything(), id)
     }
-    const isVite = expect.getState().currentTestName?.includes('vite')
     expect(loadCallback).toHaveBeenCalledWith(
       id,
-      ...(isVite ? [expect.anything()] : []),
+      ...(hasExtraOptions ? [expect.anything()] : []),
     )
   })
 }

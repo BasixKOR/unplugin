@@ -52,7 +52,9 @@ function check(resolveIdHandler: Mock, loadHandler: Mock, transformHandler: Mock
   expect(transformHandler).toBeCalledTimes(1)
 
   const testName = expect.getState().currentTestName
-  const hasExtraOptions = testName?.includes('vite') || testName?.includes('rolldown')
+  const hasExtraOptions = testName?.includes('vite')
+    || testName?.includes('rolldown')
+    || testName?.includes('rollup')
 
   expect(transformHandler).lastCalledWith(
     expect.stringMatching('export default 42'),

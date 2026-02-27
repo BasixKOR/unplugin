@@ -51,16 +51,18 @@ function checkResolveIdHook(resolveIdCallback: Mock): void {
 }
 
 function checkLoadHook(loadCallback: Mock): void {
-  const isVite = expect.getState().currentTestName?.includes('vite')
+  const testName = expect.getState().currentTestName
+  const hasExtraOptions = testName?.includes('vite')
+    || testName?.includes('rollup')
 
   expect(loadCallback).toHaveBeenCalledWith(
     expect.stringMatching(/(?:\/|\\)entry\.js\.js$/),
-    ...(isVite ? [expect.anything()] : []),
+    ...(hasExtraOptions ? [expect.anything()] : []),
   )
 
   expect(loadCallback).toHaveBeenCalledWith(
     expect.stringMatching(/(?:\/|\\)imported\.js\.js$/),
-    ...(isVite ? [expect.anything()] : []),
+    ...(hasExtraOptions ? [expect.anything()] : []),
   )
 }
 
