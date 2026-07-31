@@ -29,7 +29,7 @@ export { data }
 export default {
   watch: ['./repository.json'],
   load() {
-    const fileContent = readFileSync(resolve(import.meta.dirname, '../repository.json'), 'utf-8')
+    const fileContent = readFileSync(resolve(import.meta.dirname, 'repository.json'), 'utf-8')
     return JSON.parse(fileContent)
   },
 }
