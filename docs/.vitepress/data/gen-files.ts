@@ -39,7 +39,9 @@ for (const [key, repo] of Object.entries(data)) {
 
 writeFileSync(
   path.resolve(import.meta.dirname, 'repository.json'),
-  JSON.stringify(Object.values(data), null, 2),
+  JSON.stringify(Object.values(data).sort(
+    (a, b) => b.stargazers.totalCount - a.stargazers.totalCount,
+  ), null, 2),
 )
 
 consola.success('All files generate done!')
